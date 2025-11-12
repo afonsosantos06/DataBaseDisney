@@ -1,0 +1,16 @@
+Movies and series in the channel Disney Plus
+Source: https://www.kaggle.com/datasets/shivamb/disney-movies-and-tv-shows
+
+Columns
+show_id
+type - Movie or TV Show
+title
+director - sometimes there are several names, that should be separated
+cast - sometimes there are several names, that should be separated 
+country - countries where the item is available, should be separated
+date_added - date of availability in the TV channel
+release_year - date of original publication
+rating
+duration
+listed_in - categories (should be separated)
+description
