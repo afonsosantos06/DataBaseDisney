@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 import re
+import populate_db
 
 global DB, DB_FILE
 
@@ -13,6 +14,7 @@ def connect():
   global DB, DB_FILE
   c = sqlite3.connect(DB_FILE, check_same_thread=False)
   # print("connected", c)
+  c = populate_db.first_populate(c)
   c.row_factory = sqlite3.Row
   DB['conn'] = c
   DB['cursor'] = c.cursor()
