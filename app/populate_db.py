@@ -45,7 +45,7 @@ def handle_date_added(c, original_csv):
   return original_csv
 
 def handle_people(c, original_csv):
-  df = pd.concat([original_csv['cast'], original_csv['director']], axis=0).reset_index(drop=True).to_frame('name')
+  df = pd.concat([original_csv['cast'], original_csv['director']]).to_frame('name')
   df["name"] = df["name"].str.split(", ")
   df = df.explode("name")
   df = df.dropna(subset=["name"])
