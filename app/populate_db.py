@@ -40,6 +40,7 @@ def handle_date_added(c, original_csv):
   df = df.dropna()
   original_csv = original_csv.drop(columns=["date_added"])
   df.to_sql("added_date", c, if_exists="replace", index=False)
+  return original_csv
 
 
 def first_populate(c):
@@ -48,6 +49,8 @@ def first_populate(c):
   original_csv = custom_table_create(c, original_csv, "cast", "actors")
   original_csv = custom_table_create(c, original_csv, "listed_in", "genres")
   original_csv = custom_table_create(c, original_csv, "rating", "ratings")
-  handle_date_added(c, original_csv)
+  original_csv = custom_table_create(c, original_csv, "director", "directors")
+  original_csv = custom_table_create(c, original_csv, "country", "countries")
+  original_csv = handle_date_added(c, original_csv)
   original_csv.to_sql("Shows", c, if_exists="replace", index=False)
   return c
