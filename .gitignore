@@ -1,3 +1,6 @@
 __pycache__
 my_database.db
 tests
+uv.lock
+pyproject.toml
+.python-version

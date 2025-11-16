@@ -14,7 +14,6 @@ def connect():
   global DB, DB_FILE
   c = sqlite3.connect(DB_FILE, check_same_thread=False)
   # print("connected", c)
-  c = populate_db.first_populate(c)
   c.row_factory = sqlite3.Row
   DB['conn'] = c
   DB['cursor'] = c.cursor()
