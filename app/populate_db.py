@@ -61,6 +61,16 @@ def handle_people(c, original_csv):
   df["id"] = range(1, len(df)+1)
   df = df[["id", "name"]]
   df.to_sql("people", c, if_exists="append", index=False)
+  for i in ["cast", "director"]:
+    directors_show = pd.DataFrame()
+    original_csv[f"{i}_list"] = original_csv[f"{i}"].dropna().apply(
+      lambda x: [c.strip() for c in x.split(",")]
+    )
+    exploded = original_csv.explode(f"{i}_list")
+    directors_show = exploded.merge(df, left_on=f"{i}_list", right_on="name")[["show_id","id"]]
+    directors_show.columns = ["show_id", f"{i}"]
+    directors_show.to_sql(f"{i}_show", c, if_exists="append", index=False)
+    original_csv = original_csv.drop(columns=[f"{i}_list"])
   original_csv = original_csv.drop(columns=["cast", "director"])
   return original_csv
 
@@ -72,8 +82,6 @@ def first_populate(c):
   original_csv = custom_table_create(c, original_csv, "country", "countries")
   original_csv = handle_date_added(c, original_csv)
   original_csv = handle_people(c, original_csv)
-  print(original_csv.columns)
-  print("-----------------------------------------------")
   original_csv.to_sql("shows", c, if_exists="append", index=False)
   return c
 
@@ -95,10 +103,21 @@ if __name__ == "__main__":
       Column("id", Integer, primary_key=True),
       Column("name", Integer)
     )
+    if(i == "people"): continue
     t_show = Table(
       f"{i}_show", metadata,
       Column("show_id", Integer, ForeignKey("shows.show_id")),
       Column(i, Integer, ForeignKey(f"{i}.id")),
     )
+  actors_show = Table(
+    "cast_show", metadata,
+    Column("show_id", ForeignKey("shows.show_id")),
+    Column("cast", ForeignKey("people.id")),
+  )
+  directors_show = Table(
+    "director_show", metadata,
+    Column("show_id", ForeignKey("shows.show_id")),
+    Column("director", ForeignKey("people.id")),
+  )
   metadata.create_all(c)
   first_populate(c)
