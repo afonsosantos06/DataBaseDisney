@@ -98,8 +98,30 @@ def first_populate(c):
   original_csv = custom_table_create(c, original_csv, "country", "countries")
   original_csv = handle_date_added(c, original_csv)
   original_csv = handle_people(c, original_csv)
+  original_csv = seperate_shows(c, original_csv)
   original_csv.to_sql("shows", c, if_exists="append", index=False)
   return c
+
+def seperate_shows(c, original_csv):
+  movies = []
+  tvseries = []
+  movies_df = pd.DataFrame()
+  series_df = pd.DataFrame()
+  df = original_csv[["show_id", "type", "duration"]]
+  for show in df.itertuples(index = False):
+    show_id = getattr(show, "show_id")
+    show_type = getattr(show, "type")
+    show_duration = getattr(show, "duration").split()[0]
+    if(show_type == "Movie"):
+      movies.append({"show_id": show_id, "duration": show_duration})
+    else:
+      tvseries.append({"show_id": show_id, "duration": show_duration})
+  movies_df = pd.concat([movies_df, pd.DataFrame(movies)], ignore_index=True)
+  series_df = pd.concat([series_df, pd.DataFrame(tvseries)], ignore_index=True)
+  movies_df.to_sql("movies", c, if_exists='append', index=False)
+  series_df.to_sql("series", c, if_exists='append', index=False)
+  original_csv = original_csv.drop(columns=["type", "duration"])
+  return original_csv
 
 if __name__ == "__main__":
   c = create_engine(f"sqlite:///{DB_FILE}", connect_args={"check_same_thread": False})
@@ -107,9 +129,7 @@ if __name__ == "__main__":
   shows = Table(
     "shows", metadata,
     Column("show_id", Integer, primary_key=True),
-    Column("type", String),
     Column("title", String),
-    Column("duration", String),
     Column("release_year", String),
     Column("description", String)
   )
@@ -139,6 +159,16 @@ if __name__ == "__main__":
     "date_added", metadata,
     Column("show_id", Integer, ForeignKey("shows.show_id")),
     Column("date", Date),
+  )
+  movies = Table(
+    "movies", metadata,
+    Column("show_id", Integer, ForeignKey("shows.show_id")),
+    Column("duration", Integer),
+  )
+  series = Table(
+    "series", metadata,
+    Column("show_id", Integer, ForeignKey("shows.show_id")),
+    Column("duration", Integer),
   )
   metadata.create_all(c)
   first_populate(c)
