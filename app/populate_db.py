@@ -1,8 +1,23 @@
 import pandas as pd
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey, Date
 import sqlite3
+from enum import Enum
 
 DB_FILE = 'my_database.db'
+
+class Month(Enum):
+    January = 1
+    February = 2
+    March = 3
+    April = 4
+    May = 5
+    June = 6
+    July = 7
+    August = 8
+    September = 9
+    October = 10
+    November = 11
+    December = 12
 
 def table_show_other(c, original_csv, other_table, column, new_column_name):
   df = pd.DataFrame()
@@ -45,10 +60,11 @@ def handle_date_added(c, original_csv):
   df["day"] = df["day"].str.replace(",", "")
   df = df.drop(columns=["date_added"])
   df = df.dropna()
-  df["day"] = df["day"].astype("int64", errors='raise')
-  df["year"] = df["year"].astype("int64", errors='raise')
+  df["month"] = df["month"].apply(lambda m: Month[m].value)
+  df["date"] = df["year"].astype(str) + "-" + df["month"].astype(str)  + "-" + df["day"].astype(str) 
+  df = df.drop(columns=["year", "month", "day"])
   original_csv = original_csv.drop(columns=["date_added"])
-  df.to_sql("added_date", c, if_exists="append", index=False)
+  df.to_sql("date_added", c, if_exists="append", index=False)
   return original_csv
 
 def handle_people(c, original_csv):
@@ -111,13 +127,18 @@ if __name__ == "__main__":
     )
   actors_show = Table(
     "cast_show", metadata,
-    Column("show_id", ForeignKey("shows.show_id")),
-    Column("cast", ForeignKey("people.id")),
+    Column("show_id", Integer, ForeignKey("shows.show_id")),
+    Column("cast", Integer, ForeignKey("people.id")),
   )
   directors_show = Table(
     "director_show", metadata,
-    Column("show_id", ForeignKey("shows.show_id")),
-    Column("director", ForeignKey("people.id")),
+    Column("show_id", Integer, ForeignKey("shows.show_id")),
+    Column("director", Integer, ForeignKey("people.id")),
+  )
+  date_added = Table(
+    "date_added", metadata,
+    Column("show_id", Integer, ForeignKey("shows.show_id")),
+    Column("date", Date),
   )
   metadata.create_all(c)
   first_populate(c)
