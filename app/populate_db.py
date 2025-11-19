@@ -12,7 +12,7 @@ from sqlalchemy import (
 import sqlite3
 from enum import Enum
 
-DB_FILE = "my_database.db"
+DB_FILE = "DisneyDB.db"
 
 
 class Month(Enum):
