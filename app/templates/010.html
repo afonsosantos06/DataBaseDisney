@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Exercício 10</h2>
+<p><strong>Pergunta:</strong> {{ question }}</p>
+
+<div style="padding: 20px; border: 1px solid #ccc; display: inline-block; background-color: #f9f9f9;">
+    <h3>Ano Recordista:</h3>
+    <p style="font-size: 32px; font-weight: bold; color: #333;">{{ result.release_year }}</p>
+    <p>Com um total de <strong>{{ result.total_releases }}</strong> lançamentos.</p>
+</div>
+
+<br><br>
+<a href="/">Voltar ao Início</a>
+{% endblock %}

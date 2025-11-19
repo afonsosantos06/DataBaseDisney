@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Exercício 8</h2>
+<p><strong>Pergunta:</strong> {{ question }}</p>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Género</th>
+            <th>Total de Filmes/Séries</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in results %}
+        <tr>
+            <td>{{ row.genre_name }}</td>
+            <td>{{ row.count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<a href="/">Voltar ao Início</a>
+{% endblock %}

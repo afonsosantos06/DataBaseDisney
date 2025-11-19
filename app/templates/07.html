@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Exercício 7</h2>
+<p><strong>Pergunta:</strong> {{ question }}</p>
+<p><em>(A mostrar os primeiros 20 resultados)</em></p>
+
+<ul>
+    {% for row in results %}
+        <li>{{ row.title }}</li>
+    {% endfor %}
+</ul>
+
+<br>
+<a href="/">Voltar ao Início</a>
+{% endblock %}

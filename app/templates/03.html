@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Exercício 3</h2>
+<p><strong>Pergunta:</strong> {{ question }}</p>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>País</th>
+            <th>Total de Shows</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in results %}
+        <tr>
+            <td>{{ row.country_name }}</td>
+            <td>{{ row.total_shows }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<a href="/">Voltar ao Início</a>
+{% endblock %}

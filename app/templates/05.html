@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Exercício 5</h2>
+<p><strong>Pergunta:</strong> {{ question }}</p>
+
+<div style="padding: 20px; border: 1px solid #ccc; display: inline-block;">
+    <h3>Média de Duração:</h3>
+    <!-- Arredondamos para 2 casas decimais -->
+    <p style="font-size: 24px;">{{ "%.2f"|format(result.average_minutes) }} minutos</p>
+</div>
+
+<br><br>
+<a href="/">Voltar ao Início</a>
+{% endblock %}
