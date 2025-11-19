@@ -6,7 +6,7 @@ import populate_db
 global DB, DB_FILE
 
 # TODO change this to your database file
-DB_FILE = "DisneyDB.db"
+DB_FILE = "../DisneyDB.db"
 
 DB = dict()
 

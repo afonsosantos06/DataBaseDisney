@@ -9,10 +9,11 @@ APP = Flask(__name__)
 # Start page
 @APP.route('/')
 def index():
-    stats = db.execute('''
+    shows = db.execute('''
         SELECT * 
-    ''')
-    return render_template('index.html',stats=stats)
+        FROM Shows
+    ''').fetchone()
+    return render_template('index.html',shows=shows)
 
 # TODO 
 # ...

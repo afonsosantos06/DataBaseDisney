@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ message }}</h1>
+{% for s in shows %}
+<table>
+  <tr>
+    <th>
+      Título
+    </th>
+    <th>
+      ID
+    </th>
+  </tr>
+  <tr>
+    <td>
+      {{ s.title }}
+    </td> 
+    <td>
+      {{ s.show_id }}
+    </td> 
+  </tr>
+</table>
 
-<h2> ... and hello again</h2>
-
-This is the entry page for the application!
+{% endfor %}
 
 {% endblock %}
