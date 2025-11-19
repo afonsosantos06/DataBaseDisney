@@ -1,12 +1,14 @@
 import logging
 import sqlite3
 import re
+import os
 import populate_db
 
 global DB, DB_FILE
 
-# TODO change this to your database file
-DB_FILE = "../DisneyDB.db"
+# Caminho robusto para a BD no diretório raiz do projeto
+# Resolve sempre relativo a este ficheiro (app/db.py)
+DB_FILE = os.path.join(os.path.dirname(__file__), "..", "DisneyDB.db")
 
 DB = dict()
 

@@ -24,8 +24,7 @@ questions = [
 
 @APP.route("/")
 def index():
-    shows = db.execute("SELECT * FROM Shows LIMIT 10").fetchall()
-    return render_template("index.html", shows=shows, questions=questions)
+    return render_template("index.html")
 
 
 @APP.route("/01")
@@ -177,4 +176,4 @@ def ex_10():
         LIMIT 1
     """
     result = db.execute(query).fetchone()
-    return render_template("10.html", result=result, question=questions[9])
+    return render_template("010.html", result=result, question=questions[9])
