@@ -1,26 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for s in shows %}
-<table>
-  <tr>
-    <th>
-      Título
-    </th>
-    <th>
-      ID
-    </th>
-  </tr>
-  <tr>
-    <td>
-      {{ s.title }}
-    </td> 
-    <td>
-      {{ s.show_id }}
-    </td> 
-  </tr>
-</table>
-
+<img src="../static/image.png">
+<h1>Exercises</h1>
+{% for i in range(1, 11) %}
+<a href="/0{{i}}">Exercise {{ i }}</a>
 {% endfor %}
 
 {% endblock %}
